@@ -1,5 +1,6 @@
 package net.lomeli.genemod;
 
+import net.lomeli.genemod.core.genetics.GeneManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -29,6 +30,8 @@ public class GeneticallyModified {
 
     public void init(final FMLCommonSetupEvent event) {
         DEV_ENV = FMLLoader.getNameFunction("srg").isPresent();
+
+        GeneManager.INSTANCE.registerTraits();
         //TODO: Load the things
         //TODO: Proxys?
         //TODO: Packets?
