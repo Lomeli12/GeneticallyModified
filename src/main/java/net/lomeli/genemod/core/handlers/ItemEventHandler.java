@@ -11,6 +11,7 @@ import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -18,19 +19,29 @@ import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = GeneticallyModified.MOD_ID)
 public class ItemEventHandler {
+
+    private static void giveFoodOrSeedsTraits(ItemStack stack) {
+        if (stack.isEmpty() || !stack.isFood())
+            return;
+
+        GeneHandler geneHandler = GeneHandler.getGeneInfo(stack);
+        NBTUtil.saveItemGeneTag(stack, geneHandler.toNBT());
+    }
+
     @SubscribeEvent
     public static void itemEntityCreated(EntityJoinWorldEvent event) {
         if (!event.getEntity().world.isRemote && event.getEntity() instanceof ItemEntity) {
             ItemEntity entity = (ItemEntity) event.getEntity();
             ItemStack stack = entity.getItem();
 
-            if (stack.isEmpty() || !stack.isFood())
-                return;
-
-            GeneHandler geneHandler = GeneHandler.getGeneInfo(stack);
-            NBTUtil.saveItemGeneTag(stack, geneHandler.toNBT());
+            giveFoodOrSeedsTraits(stack);
             //TODO: stuff??
         }
+    }
+
+    @SubscribeEvent
+    public static void playerPicksupItem(PlayerEvent.ItemPickupEvent event) {
+        giveFoodOrSeedsTraits(event.getStack());
     }
 
     @SubscribeEvent
