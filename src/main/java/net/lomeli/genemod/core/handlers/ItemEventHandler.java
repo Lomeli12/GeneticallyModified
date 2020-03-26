@@ -39,7 +39,7 @@ public class ItemEventHandler {
 
     @SubscribeEvent
     public static void playerPicksUpItem(PlayerEvent.ItemPickupEvent event) {
-        if (!event.getPlayer().world.isRemote)
+        if (!event.getPlayer().world.isRemote())
             giveFoodOrSeedsTraits(event.getStack());
     }
 
@@ -55,7 +55,6 @@ public class ItemEventHandler {
 
         GeneHandler geneHandler = GeneHandler.getGeneInfo(stack);
         geneHandler.onFoodEaten(player, stack);
-
     }
 
     @SubscribeEvent
