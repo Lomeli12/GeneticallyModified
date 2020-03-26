@@ -7,7 +7,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Food;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -54,7 +53,6 @@ public class ItemEventHandler {
         if (!stack.isFood())
             return;
 
-        Food food = stack.getItem().getFood();
         GeneHandler geneHandler = GeneHandler.getGeneInfo(stack);
 
         geneHandler.onFoodEaten(player, stack);
