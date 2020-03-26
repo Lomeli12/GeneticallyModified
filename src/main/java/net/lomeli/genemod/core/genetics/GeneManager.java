@@ -14,13 +14,20 @@ public enum GeneManager {
 
     private final HashMap<String, ITrait> registeredTraits;
 
+
     GeneManager() {
         registeredTraits = Maps.newHashMap();
     }
 
-    public void registerTraits() {
-        registeredTraits.put(Saturation.traitID, new Saturation());
-        registeredTraits.put(Hunger.traitID, new Hunger());
+    public void initTraits() {
+        registerTrait(new Saturation());
+        registerTrait(new Hunger());
+    }
+
+    //Possibly do API and expose this function?
+    public void registerTrait(ITrait trait) {
+        if (trait != null)
+            registeredTraits.put(trait.getTraitID(), trait);
     }
 
     public ITrait getTrait(String id) {

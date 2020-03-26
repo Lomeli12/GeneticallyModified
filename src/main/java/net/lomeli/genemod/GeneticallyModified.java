@@ -19,7 +19,6 @@ public class GeneticallyModified {
 
     public static Logger log = LogManager.getLogger(MOD_NAME);
 
-
     public GeneticallyModified() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::init);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
@@ -31,7 +30,7 @@ public class GeneticallyModified {
     public void init(final FMLCommonSetupEvent event) {
         DEV_ENV = FMLLoader.getNameFunction("srg").isPresent();
 
-        GeneManager.INSTANCE.registerTraits();
+        GeneManager.INSTANCE.initTraits();
         //TODO: Load the things
         //TODO: Proxys?
         //TODO: Packets?
