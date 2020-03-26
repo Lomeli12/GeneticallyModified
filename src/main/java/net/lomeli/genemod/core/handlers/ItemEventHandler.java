@@ -4,7 +4,6 @@ import net.lomeli.genemod.GeneticallyModified;
 import net.lomeli.genemod.util.NBTUtil;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Food;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -29,7 +28,7 @@ public class ItemEventHandler {
 
     @SubscribeEvent
     public static void itemEntityCreated(EntityJoinWorldEvent event) {
-        if (!event.getEntity().world.isRemote && event.getEntity() instanceof ItemEntity) {
+        if (!event.getWorld().isRemote() && event.getEntity() instanceof ItemEntity) {
             ItemEntity entity = (ItemEntity) event.getEntity();
             ItemStack stack = entity.getItem();
 
@@ -39,8 +38,9 @@ public class ItemEventHandler {
     }
 
     @SubscribeEvent
-    public static void playerPicksupItem(PlayerEvent.ItemPickupEvent event) {
-        giveFoodOrSeedsTraits(event.getStack());
+    public static void playerPicksUpItem(PlayerEvent.ItemPickupEvent event) {
+        if (!event.getPlayer().world.isRemote)
+            giveFoodOrSeedsTraits(event.getStack());
     }
 
     @SubscribeEvent
@@ -54,7 +54,6 @@ public class ItemEventHandler {
             return;
 
         GeneHandler geneHandler = GeneHandler.getGeneInfo(stack);
-
         geneHandler.onFoodEaten(player, stack);
 
     }
@@ -64,7 +63,6 @@ public class ItemEventHandler {
         ItemStack stack = event.getItemStack();
         if (!stack.isFood())
             return;
-        Food food = stack.getItem().getFood();
         GeneHandler geneHandler = GeneHandler.getGeneInfo(stack);
         event.getToolTip().add(new StringTextComponent("Traits:"));
         for (Map.Entry<String, Float> entry : geneHandler.getCropTraits().entrySet()) {
