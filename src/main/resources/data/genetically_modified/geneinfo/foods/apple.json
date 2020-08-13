@@ -1,0 +1,7 @@
+{
+  "item": "minecraft:apple",
+  "defaultTraits": [
+    "genetically_modified:saturation",
+    "genetically_modified:hunger"
+  ]
+}

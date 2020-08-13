@@ -5,7 +5,10 @@ import net.lomeli.genemod.util.NBTUtil;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -18,12 +21,13 @@ import java.util.Map;
 @Mod.EventBusSubscriber(modid = GeneticallyModified.MOD_ID)
 public class ItemEventHandler {
 
-    private static void giveFoodOrSeedsTraits(ItemStack stack) {
+    private static GeneHandler giveFoodOrSeedsTraits(ItemStack stack) {
         if (stack.isEmpty() || !stack.isFood())
-            return;
+            return null;
 
         GeneHandler geneHandler = GeneHandler.getGeneInfo(stack);
         NBTUtil.saveItemGeneTag(stack, geneHandler.toNBT());
+        return geneHandler;
     }
 
     @SubscribeEvent
@@ -32,15 +36,17 @@ public class ItemEventHandler {
             ItemEntity entity = (ItemEntity) event.getEntity();
             ItemStack stack = entity.getItem();
 
-            giveFoodOrSeedsTraits(stack);
+            GeneHandler handler = giveFoodOrSeedsTraits(stack);
             //TODO: stuff??
         }
     }
 
     @SubscribeEvent
     public static void playerPicksUpItem(PlayerEvent.ItemPickupEvent event) {
-        if (!event.getPlayer().world.isRemote())
-            giveFoodOrSeedsTraits(event.getStack());
+        if (!event.getPlayer().world.isRemote()) {
+            GeneHandler handler = giveFoodOrSeedsTraits(event.getStack());
+            //TODO: stuff??
+        }
     }
 
     @SubscribeEvent
@@ -58,13 +64,14 @@ public class ItemEventHandler {
     }
 
     @SubscribeEvent
+    @OnlyIn(Dist.CLIENT)
     public static void foodToolTip(ItemTooltipEvent event) {
         ItemStack stack = event.getItemStack();
         if (!stack.isFood())
             return;
         GeneHandler geneHandler = GeneHandler.getGeneInfo(stack);
         event.getToolTip().add(new StringTextComponent("Traits:"));
-        for (Map.Entry<String, Float> entry : geneHandler.getCropTraits().entrySet()) {
+        for (Map.Entry<ResourceLocation, Float> entry : geneHandler.getCropTraits().entrySet()) {
             float efficacy = entry.getValue() * 100;
             event.getToolTip().add(new StringTextComponent(" - " + entry.getKey() + ": " + efficacy + "%"));
         }

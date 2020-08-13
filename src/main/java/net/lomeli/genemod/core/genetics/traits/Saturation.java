@@ -4,18 +4,20 @@ import net.lomeli.genemod.GeneticallyModified;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Food;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 
 public class Saturation implements ITrait {
-    public static final String traitID = "saturation";
+    public static final ResourceLocation traitID = new ResourceLocation(GeneticallyModified.MOD_ID, "saturation");
 
     @Override
-    public String getTraitID() {
+    public ResourceLocation getTraitID() {
         return traitID;
     }
 
     @Override
-    public void onHarvest(float efficacy) {
+    public void onHarvest(NonNullList<ItemStack> drops, float efficacy) {
+
     }
 
     @Override
@@ -24,11 +26,6 @@ public class Saturation implements ITrait {
         player.getFoodStats().addStats(0, -food.getSaturation());
         float trueSaturation = food.getSaturation() * efficacy;
         player.getFoodStats().addStats(0, trueSaturation);
-    }
-
-    @Override
-    public boolean defaultTrait() {
-        return true;
     }
 
     @Override
@@ -43,6 +40,6 @@ public class Saturation implements ITrait {
 
     @Override
     public ResourceLocation getUnlocalizedName() {
-        return new ResourceLocation(GeneticallyModified.MOD_ID, traitID);
+        return traitID;
     }
 }

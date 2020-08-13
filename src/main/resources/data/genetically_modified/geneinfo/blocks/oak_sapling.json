@@ -1,0 +1,7 @@
+{
+  "item": "minecraft:oak_sapling",
+  "defaultTraits": [
+    "genetically_modified:saturation",
+    "genetically_modified:hunger"
+  ]
+}

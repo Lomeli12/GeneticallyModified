@@ -1,0 +1,7 @@
+{
+  "item": "minecraft:melon",
+  "defaultTraits": [
+    "genetically_modified:saturation",
+    "genetically_modified:hunger"
+  ]
+}
