@@ -1,6 +1,9 @@
 package net.lomeli.genemod.core.handlers;
 
 import net.lomeli.genemod.GeneticallyModified;
+import net.lomeli.genemod.core.capability.items.StackGeneProvider;
+import net.lomeli.genemod.core.genetics.items.ItemGeneInfo;
+import net.lomeli.genemod.core.genetics.items.ItemTraitManager;
 import net.lomeli.genemod.util.NBTUtil;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -9,6 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingEntityUseItemEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -20,6 +24,17 @@ import java.util.Map;
 
 @Mod.EventBusSubscriber(modid = GeneticallyModified.MOD_ID)
 public class ItemEventHandler {
+
+    @SubscribeEvent
+    @SuppressWarnings("ConstantConditions")
+    public static void attachItemCapability(AttachCapabilitiesEvent<ItemStack> event) {
+        ItemStack stack = event.getObject();
+        if (stack.isEmpty())
+            return;
+        ItemGeneInfo traits = ItemTraitManager.INSTANCE.getGeneInfo(stack);
+        if (traits != null && (traits.getDefaultTraits().length > 0 || traits.getPossibleTraits().length > 0))
+            event.addCapability(StackGeneProvider.ID, new StackGeneProvider());
+    }
 
     private static GeneHandler giveFoodOrSeedsTraits(ItemStack stack) {
         if (stack.isEmpty() || !stack.isFood())

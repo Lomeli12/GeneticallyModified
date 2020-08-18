@@ -14,9 +14,9 @@ import java.util.List;
 
 @JsonAdapter(ItemGeneInfo.ItemGeneInfoAdapter.class)
 public class ItemGeneInfo {
-    private ResourceLocation item;
-    private ITrait[] defaultTraits;
-    private ITrait[] possibleTraits;
+    private final ResourceLocation item;
+    private final ITrait[] defaultTraits;
+    private final ITrait[] possibleTraits;
 
     public ItemGeneInfo(ResourceLocation item, ITrait[] defaultTraits, ITrait[] possibleTraits) {
         this.item = item;

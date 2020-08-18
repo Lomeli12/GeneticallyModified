@@ -1,6 +1,10 @@
 package net.lomeli.genemod;
 
+import net.lomeli.genemod.core.capability.items.IStackGene;
+import net.lomeli.genemod.core.capability.items.StackGene;
+import net.lomeli.genemod.core.capability.items.StackGeneStorage;
 import net.lomeli.genemod.core.genetics.GeneManager;
+import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -31,6 +35,7 @@ public class GeneticallyModified {
         DEV_ENV = FMLLoader.getNameFunction("srg").isPresent();
 
         GeneManager.INSTANCE.initTraits();
+        CapabilityManager.INSTANCE.register(IStackGene.class, new StackGeneStorage(), StackGene::new);
         //TODO: Load the things
         //TODO: Proxys?
         //TODO: Packets?
