@@ -37,9 +37,4 @@ public class Saturation implements ITrait {
     public float maxNaturalEfficacy() {
         return 0.1f;
     }
-
-    @Override
-    public ResourceLocation getUnlocalizedName() {
-        return traitID;
-    }
 }

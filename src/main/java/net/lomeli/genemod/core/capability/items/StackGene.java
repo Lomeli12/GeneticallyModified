@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.ResourceLocation;
 
+import javax.annotation.Nullable;
 import java.util.Map;
 
 public class StackGene implements IStackGene {
@@ -54,5 +55,13 @@ public class StackGene implements IStackGene {
             if (trait != null)
                 traits.put(trait, nbt.getFloat(key));
         }
+    }
+
+    @SuppressWarnings("all")
+    public static IStackGene getGenes(ItemStack stack) {
+        if (stack == null || stack.isEmpty())
+            return null;
+        return stack.getCapability(StackGeneProvider.GENES)
+                .orElseThrow(() -> new IllegalArgumentException("LazyOptional should not be empty!"));
     }
 }

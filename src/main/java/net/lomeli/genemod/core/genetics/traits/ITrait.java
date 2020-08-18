@@ -1,5 +1,6 @@
 package net.lomeli.genemod.core.genetics.traits;
 
+import net.lomeli.genemod.GeneticallyModified;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
@@ -18,5 +19,7 @@ public interface ITrait {
 
     //TODO: Biome chance boost?
 
-    ResourceLocation getUnlocalizedName();
+    default String getUnlocalizedName() {
+        return "trait." + GeneticallyModified.MOD_ID + "." + getTraitID().getPath();
+    }
 }
